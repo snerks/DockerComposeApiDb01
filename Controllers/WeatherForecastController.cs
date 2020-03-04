@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DockerComposeApiDb01.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -18,22 +19,40 @@ namespace DockerComposeApiDb01.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(
+            ILogger<WeatherForecastController> logger,
+            ColourContext colourContext
+            )
         {
             _logger = logger;
+            ColourContext = colourContext ?? throw new ArgumentNullException(nameof(colourContext));
         }
 
+        public ColourContext ColourContext { get; }
+
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public ActionResult<IEnumerable<Colour>> GetColourItems()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            try
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+                Console.WriteLine("GetColourItems:START");
+
+                var results = ColourContext.ColourItems.ToList();
+
+                Console.WriteLine("GetColourItems:END");
+
+                return results;
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine("GetColourItems:Exception:START");
+
+                Console.WriteLine(ex.ToString());
+
+                Console.WriteLine("GetColourItems:Exception:END");
+
+                throw;
+            }
         }
     }
 }
