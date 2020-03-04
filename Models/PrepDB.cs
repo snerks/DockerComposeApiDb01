@@ -19,11 +19,31 @@ namespace DockerComposeApiDb01.Models
         {
             System.Console.WriteLine("SeedData - START");
 
-            System.Console.WriteLine("Applying migration - BEFORE");
+            var maxIterationCount = 10;
 
-            context.Database.Migrate();
+            for (int i = 0; i < maxIterationCount; i++)
+            {
+                try
+                {
+                    System.Console.WriteLine($"SeedData - Applying migration - BEFORE - iterationCount = [{i}]");
 
-            System.Console.WriteLine("Applying migration - AFTER");
+                    context.Database.Migrate();
+
+                    System.Console.WriteLine($"SeedData - Applying migration - AFTER - iterationCount = [{i}]");
+
+                    break;
+                }
+                catch (System.Exception ex)
+                {
+                    System.Console.WriteLine($"SeedData - Applying migration - Exception - START - iterationCount = [{i}]");
+
+                    System.Console.WriteLine($"SeedData - Applying migration - Exception - [{ex}]");
+
+                    System.Console.WriteLine($"SeedData - Applying migration - Exception - END - iterationCount = [{i}]");
+
+                    System.Threading.Thread.Sleep(20000);
+                }
+            }
 
             if (!context.ColourItems.Any())
             {
