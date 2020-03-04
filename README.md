@@ -1,7 +1,7 @@
 # DockerComposeApiDb01
 Docker Compose sample, with ASP.NET Core 3.1 Web API and SQL Server
 
-Based on an excellent YouTube series by Les Jackson (@binarythistle):
+Based on an excellent YouTube series by Les Jackson [@binarythistle]
 
 https://www.youtube.com/watch?v=4V7CwC_4oss
 
